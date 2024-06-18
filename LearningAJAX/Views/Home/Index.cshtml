@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Get User by ID";
+}
+
+<h2>Get User by ID</h2>
+
+<div>
+    <label for="userId">User ID:</label>
+    <input type="text" id="userId" />
+    <button id="getUserBtn">Get User</button>
+</div>
+
+<div id="userDetails" style="margin-top: 20px;">
+    <!-- User details will be populated here -->
+</div>
+
+<div>
+    <h4>Add User</h4>
+    <label for="userName">User Name:</label>
+    <input type="text" id="userName" />
+    <label for="userLastName">User Last Name:</label>
+    <input type="text" id="userLastName" />
+    <button id="addUserBtn">Add User</button>
+</div>
+
+<div id="resultAddingUser" style="margin-top: 20px;">
+    <!-- Result of adding user will be populated here -->
+</div>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Function to get user by ID on keyup event
+            $('#userId').keyup(function () {
+                var userId = $('#userId').val();
+                if (userId) {
+                    $.ajax({
+                        url: '@Url.Action("GetUserById", "Home")',
+                        type: 'GET',
+                        data: { id: userId },
+                        success: function (data) {
+                            if (data) {
+                                $('#userDetails').html(
+                                    '<p><strong>ID:</strong> ' + data.Id + '</p>' +
+                                    '<p><strong>Name:</strong> ' + data.Name + '</p>' +
+                                    '<p><strong>Last Name:</strong> ' + data.LastName + '</p>' +
+                                    '<p><strong>Created Date:</strong> ' + new Date(data.CreatDateTime).toLocaleString() + '</p>'
+                                );
+                            } else {
+                                $('#userDetails').html('<p>User not found</p>');
+                            }
+                        },
+                        error: function () {
+                            $('#userDetails').html('<p>An error occurred while fetching user details</p>');
+                        }
+                    });
+                } else {
+                    $('#userDetails').html('<p>Please enter a user ID</p>');
+                }
+            });
+
+            // Function to add a new user on button click
+            $('#addUserBtn').click(function () {
+                var userName = $('#userName').val();
+                var userLastName = $('#userLastName').val();
+                if (userName && userLastName) {
+                    $.ajax({
+                        url: '@Url.Action("AddNewUser", "Home")',
+                        type: 'POST',
+                        data: { Name: userName, LastName: userLastName },
+                        success: function (data) {
+                            if (data) {
+                                $('#resultAddingUser').html('<p>' + data + '</p>');
+                            } else {
+                                $('#resultAddingUser').html('<p>Failed to add user</p>');
+                            }
+                        },
+                        error: function () {
+                            $('#resultAddingUser').html('<p>An error occurred while adding the user</p>');
+                        }
+                    });
+                } else {
+                    $('#resultAddingUser').html('<p>Please enter both name and last name</p>');
+                }
+            });
+        });
+    </script>
+}
