@@ -67,6 +67,7 @@
     <Build Include="dbo\StoredProcedures\ShowAllUsers.sql" />
     <Build Include="dbo\StoredProcedures\ShowUserById.sql" />
     <Build Include="dbo\StoredProcedures\getdetailuserbyName.sql" />
+    <Build Include="dbo\StoredProcedures\SearchUsersByName.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="AjaxDb_Test.publish.xml" />

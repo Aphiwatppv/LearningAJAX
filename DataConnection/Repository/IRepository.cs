@@ -9,5 +9,6 @@ namespace DataConnection.Repository
         Task<string> AddUserToDbAsync(User user);
         Task<IEnumerable<User>> getAllUsersAsync();
         Task<User> getSingleUserAsync(int Id);
+        Task<IEnumerable<User>> SearchBySpecificName(string specificName);
     }
 }

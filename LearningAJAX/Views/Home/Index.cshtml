@@ -26,6 +26,20 @@
 <div id="resultAddingUser" style="margin-top: 20px;">
     <!-- Result of adding user will be populated here -->
 </div>
+
+
+<div>
+    <label for="searchinguser"> Specific word</label>
+    <input  type="text" id="searchinguser"/>
+</div>
+
+<div id="getAlluser">
+
+
+</div>
+
+
+
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -59,8 +73,6 @@
                     $('#userDetails').html('<p>Please enter a user ID</p>');
                 }
             });
-
-            // Function to add a new user on button click
             $('#addUserBtn').click(function () {
                 var userName = $('#userName').val();
                 var userLastName = $('#userLastName').val();
@@ -84,6 +96,74 @@
                     $('#resultAddingUser').html('<p>Please enter both name and last name</p>');
                 }
             });
+                        @*$.ajax({
+                    url: '@Url.Action("GetAllUser", "Home")',
+                     type: 'GET',
+                    data: {},
+                    success: function (data) {
+                        if (data) {
+                            $('#getAlluser').html(
+                                '<p>This is Name of user :'  +data.Name + '</p>'
+                            );
+                        }
+                    }
+
+            })*@
+
+
+            @*$.ajax({
+                url: '@Url.Action("GetAllUser", "Home")',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    if (data && data.length > 0) {
+                        var htmlContent = '';
+                        data.forEach(function(user) {
+                            htmlContent += '<p>This is the Name of the user: ' + user.Name + '</p>';
+                        });
+                        $('#getAlluser').html(htmlContent);
+                    } else {
+                        $('#getAlluser').html('<p>No user data found</p>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ', status, error);
+                    $('#getAlluser').html('<p>An error occurred while fetching user data.</p>');
+                }
+            });*@
+            $('#searchinguser').keyup(function () {
+                var specificUser = $('#searchinguser').val(); // Correctly get the value
+                if (specificUser) {
+                    $.ajax({
+                        url: '@Url.Action("SearchingUser", "Home")',
+                        type: 'GET',
+                        data: { specificUser: specificUser }, // Correct syntax for the data object
+                        success: function (data) {
+                            if (data && data.length > 0) {
+                                var htmlContent = '';
+                                data.forEach(function (user) {
+                                    htmlContent += '<p>This is the user: ' + user.Name + '</p>';
+                                });
+                                $('#getAlluser').html(htmlContent);
+                            } else {
+                                $('#getAlluser').html('<p>No user data found</p>'); // Handle no data case
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('AJAX Error: ', status, error);
+                            $('#getAlluser').html('<p>An error occurred while fetching user data.</p>');
+                        }
+                    });
+                } else {
+                    $('#getAlluser').html(''); // Clear the content if the input is empty
+                }
+            });
+
+
+
+
+
+
         });
     </script>
 }

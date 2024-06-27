@@ -60,5 +60,21 @@ namespace LearningAJAX.Controllers
 
             return Json(result);
         }
+
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllUser()
+        {
+            var result = await _repository.getAllUsersAsync();
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> SearchingUser(string specificUser )
+        {
+            var result = await _repository.SearchBySpecificName(specificUser);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

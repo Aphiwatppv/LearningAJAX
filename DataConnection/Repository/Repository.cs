@@ -65,6 +65,10 @@ namespace DataConnection.Repository
             return result != null ? "Added user already" : "Fail to add user";
         }
 
-
+        public async Task<IEnumerable<User>> SearchBySpecificName(string specificName)
+        {
+           var result = await _dataAcces.GetDataAsync<User, dynamic>(storedProcedure: "dbo.SearchUsersByName", new { SearchName = specificName });
+           return result;
+        }
     }
 }
